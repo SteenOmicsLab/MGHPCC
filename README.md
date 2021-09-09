@@ -69,3 +69,4 @@ In short, the script does the following:
 # IonQuant
 
 With the .quantindex files available we can now fully quantify the data. As described above the script will first build all the --psm variables, followed by running the IonQuant. Notice that --writeindex is set to False (0) here. Once quantification finished it means searching the data has completed. To reduce data storage we also clean the workspaces. We do this for the output directory, as well as within each sample directory.
+>>>>>>> 9176a1345a9d52b4bd30741b148349a99c3c4768
