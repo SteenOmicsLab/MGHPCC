@@ -37,6 +37,7 @@ Based on the user input the XXXX.sh script will determine the number of .d files
 7. Run the PeptideProphet java process
 8. Check if equal number of .pep.xml and samples are found and if yes, copy outputfiles from Node to network storage.
 9. Remove directories from the Node.
+kk
 
 
 *We noticed that if only a few bruker files are processed it might alter the fragment index width between batches. In our experience, batches of at least 20 will always lead to fragment indices of XX and XX, respectivly.
