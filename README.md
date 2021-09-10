@@ -11,6 +11,8 @@
 
 # Container
 
+singularity build test docker://patrickvanzalm/ubuntu_fragpipe
+
 Dockerfile
 
 Singularity docker file equivalent?
