@@ -13,7 +13,7 @@
 
 Running Fragpipe requires a containerized operating system, for which we use Ubuntu (20.04), including some depedencies such as Java. A Dockerfile is attached in this repository. We have also pushed a container to Dockerhub, which can easily be downloaded to a HPC with the following Singularity command:
 
-  singularity build test docker://patrickvanzalm/ubuntu_fragpipe
+    singularity build test docker://patrickvanzalm/ubuntu_fragpipe
 
 
 # MSfragger + PeptideProphet
