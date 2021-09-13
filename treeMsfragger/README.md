@@ -1,33 +1,8 @@
-bash tree function on msfragger results
+# Tree msfragger directory
+
+bash tree function on msfragger results. 
 
     msfragger/
-    |-- FASTA
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas.1.pepindex
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas.2.pepindex
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas.3.pepindex
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas.4.pepindex
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas.5.pepindex
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas.6.pepindex
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas.7.pepindex
-    |   |-- 2021-04-11-decoys-UP000005640_9606_SARS_COV_2.fasta.fas.8.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.1.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.10.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.2.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.3.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.4.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.5.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.6.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.7.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.8.pepindex
-    |   |-- 2021-06-09-decoys-contam-IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.fas.9.pepindex
-    |   |-- IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta
-    |   |-- IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.1.pepindex
-    |   |-- IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.2.pepindex
-    |   |-- IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.3.pepindex
-    |   |-- IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.4.pepindex
-    |   `-- IgOME_FASTAFILE_allExcept161Igomes_NoLeader.fasta.5.pepindex
     |-- MSFragger-20171106
     |   |-- LICENSE-3RD-PARTY.txt
     |   |-- MSFragger-20171106-Manual.pdf
