@@ -37,7 +37,6 @@ We suggest to download these and try to make the directory have the same strucut
 
 Running Fragpipe requires a containerized operating system, for which we use Ubuntu (20.04), java and some other dependencies (see DockerFile). The container can be found on DockerHub, and can easily be downloaded for singularity usage using the following line:
 
-
     singularity build ubuntu_fragpipe docker://patrickvanzalm/ubuntu_fragpipe
 
 
