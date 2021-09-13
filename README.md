@@ -9,11 +9,23 @@
 
 # Introduction
 
+The IMPACC study (DOI: 10.1126/sciimmunol.abf3733) is a prospective longitdinal study designed to enroll 1000 hospitalized patients, including the collection of blood specimen throughout the year. The Steen Lab at Boston Children's Hospital will be responsible for the proteomics analysis of those blood specimen. We expect to analye up to 10000 samples, which will result in an unprecedented amount of raw mass spectrometry data to analyse. FragPipe is known for its excellent speed and results with Bruker TimsTOF data (DOI: 10.1074/mcp.TIR120.002048), but analysis of such large quantities of samples is not feasible on a local computer. Instead, we have worked on implementing the FragPipe tools for High Performance Computing usage.
+
+All processes were run on the MASSACHUSETTS GREEN HIGH PERFORMANCE COMPUTING CENTER (MGHPCC, https://www.mghpcc.org/). MGHPCC is running CentOS (7.9.2009) with OpenHPC (1.3), Slurm 18.08.8, singularity 3.6.4 and bash 4.2.46(2).
+
+# FragPipe
+
+The FragPipe software is a licensed, java based computational tools for the analysis of mass spectrometry based proteomics data. To run all processes of the Fragpipe toolkit one has to download FragPipe (https://github.com/Nesvilab/FragPipe/releases), MSFragger (http://msfragger-upgrader.nesvilab.org/upgrader/) and Philosopher (https://github.com/nesvilab/philosopher/releases/). 
+
+
+
 # Container
 
-Running Fragpipe requires a containerized operating system, for which we use Ubuntu (20.04), including some depedencies such as Java. A Dockerfile is attached in this repository. We have also pushed a container to Dockerhub, which can easily be downloaded to a HPC with the following Singularity command:
+Running Fragpipe requires a containerized operating system, for which we use Ubuntu (20.04), java and some other dependencies (see DockerFile). The container can be found on DockerHub, and can easily be downloaded for singularity usage using the following line:
 
-    singularity build test docker://patrickvanzalm/ubuntu_fragpipe
+
+    singularity build ubuntu_fragpipe docker://patrickvanzalm/ubuntu_fragpipe
+
 
 # FASTA file
 
@@ -50,7 +62,7 @@ kk
 
 *We noticed that if only a few bruker files are processed it might alter the fragment index width between batches. In our experience, batches of at least 20 will always lead to fragment indices of XX and XX, respectivly.
 
-**We noticed that if we do not copy the .d files to the node speed was vastly reduced. During the loading of the .d file (i.e. writing the .mzBIN file) we observed a high number of read/write processes. Having the .d files locally on the Node compared to over the network vastly improved the speed.
+**We noticed that if we do not copy the .d files to the node's local storage the speed was vastly reduced. During the loading of the .d file (i.e. writing the .mzBIN file) we observed a high number of read/write processes. Having the .d files locally on the Node compared to over the network vastly improved the speed.
 
 # ProteinProphet + Philosopher
 
