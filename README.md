@@ -35,10 +35,7 @@ We suggest to download these and try to make the directory have the same strucut
 
 # Container
 
-Running Fragpipe requires a containerized operating system, for which we use Ubuntu (20.04), java and some other dependencies (see DockerFile). The container can be found on DockerHub, and can easily be downloaded for singularity usage using the following line:
-
-    singularity build ubuntu_fragpipe docker://patrickvanzalm/ubuntu_fragpipe
-
+Running Fragpipe requires a containerized operating system, for which we use Ubuntu (20.04), java and some other dependencies (see DockerFile). The container can be found on DockerHub (LINK!!!!!)
 
 # FASTA file
 
@@ -63,13 +60,11 @@ Based on the user input the XXXX.sh script will determine the number of .d files
 2. Copy msfragger from network to node.
 3. Copy .d files to node **
 4. Make sub-directories and set up the philosopher workspace for each .d file in the outputfiles directory
-5. Run the MSfragger java process
+5. Run the MSfragger java process to create .pepXML files
 6. Copy the .pepXML files from the timstoffiles directory to the outputfiles directory
-7. Run the PeptideProphet java process
+7. Run PeptideProphet to create .pep.xml files
 8. Check if equal number of .pep.xml and samples are found and if yes, copy outputfiles from Node to network storage.
-9. Remove directories from the Node.
-kk
-
+9. Clean up the Node.
 
 *We noticed that if only a few bruker files are processed it might alter the fragment index width between batches. In our experience, batches of at least 20 will always lead to fragment indices of XX and XX, respectivly.
 
@@ -90,7 +85,7 @@ This script will run the following processes:
 
 # Write .quantindex
 
-We noticed that IonQuant writes .quantindex files for each .d bruker file. Doing so, it will use the Bruker extension, which currently only works single-threaded. due to the large amount of samples we wanted to process we had to parallelize this process. By testing we found that one can write the .quantindex files in advance, before starting the actual quantifcation step. Therefore, if we would run multiple instances of IonQuant that simultaniously write .quantindex files we can achieves higher speeds. Currently, IonQuant does not have a standalone function to write such .quantindex files. To overcome this issue, we implemented code that will keep track of the stdout from IonQuant. Once IonQuant pushes the "Updating Philosopher" to stdout we know that all .quantindex files are written and we kill the process. Since the writing of the .quantindex files is single threaded we do not need a large amount of computational power, making it possible to have multiple IonQuants running simultaniously to write .quantindex files.
+IonQuants speed is based on the (large) .quantindex files it writes for easy indexing. Similairy like MSfragger it uses the Bruker extension which currently only works single threaded. If .quantindex files are already written, IonQuant will skip the step which could potentially vastly improve speed. To parallelize the writing of quantindex files we build smaller batches and have multiple instances of IonQuant run simultaniously. Once all .quantindex files are written the IonQuant processes will be terminated.
 
 In short, the script does the following:
 1. Write the input parameter required for IonQuant. IonQuant requires a "--psm SAMPLE/psm.tsv" for each sample.
@@ -102,4 +97,33 @@ In short, the script does the following:
 With the .quantindex files available we can now fully quantify the data. As described above the script will first build all the --psm variables, followed by running the IonQuant. Notice that --writeindex is set to False (0) here. Once quantification finished it means searching the data has completed. To reduce data storage we also clean the workspaces. We do this for the output directory, as well as within each sample directory.
 
 # Instructions
+
+#### 1. Set up Fragpipe
+
+Follow the directory structure as shown in the tree (@@@@@@@@@@@@@)
+
+#### 2. Build the Singularity container
+
+run:
+
+    singularity build ubuntu_fragpipe docker://patrickvanzalm/ubuntu_fragpipe
+
+#### 3. Make Scripts directory, download scripts
+
+For example, run:
+    mkdir fragPipeScripts
+    cd fragPipeScripts
+    git clone https://github.com/PatrickvanZalm/MGHPCC.git
+    cd ../
+
+#### 4. Create log repository, update Sbatch commands
+
+    mkdir logs
+
+In the newly created directory, update the Sbatch_*.sh SLURM parameters based on your your local HPC. Do refer to the new logs directory here too.
+
+#### 5. update the settings_userinput.sh file
+
+Please following instructions in the settings_userinput.sh file; update the versions of MSFragger, Philosopher and IonQuant 
+
 
