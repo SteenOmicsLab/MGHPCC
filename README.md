@@ -15,6 +15,13 @@ Running Fragpipe requires a containerized operating system, for which we use Ubu
 
     singularity build test docker://patrickvanzalm/ubuntu_fragpipe
 
+# FASTA file
+
+something something.
+
+The code expects a fasta file with decoys using the "rev_" prefix. If you have a fasta file without decoys please run:
+
+If you do have a fasta file with decoys but with a different prefix, it can be changed in the msfragger.sh script, line XXXX.
 
 # MSfragger + PeptideProphet
 
