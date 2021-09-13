@@ -11,7 +11,7 @@
 
 The IMPACC study (DOI: 10.1126/sciimmunol.abf3733) is a prospective longitdinal study designed to enroll 1000 hospitalized patients, including the collection of blood specimen throughout the year. The Steen Lab at Boston Children's Hospital will be responsible for the proteomics analysis of those blood specimen. We expect to analye up to 10000 samples, which will result in an unprecedented amount of raw mass spectrometry data to analyse. FragPipe is known for its excellent speed and results with Bruker TimsTOF data (DOI: 10.1074/mcp.TIR120.002048), but analysis of such large quantities of samples is not feasible on a local computer. Instead, we have worked on implementing the FragPipe tools for High Performance Computing usage.
 
-All processes were run on the MASSACHUSETTS GREEN HIGH PERFORMANCE COMPUTING CENTER (MGHPCC, https://www.mghpcc.org/). MGHPCC is running CentOS (7.9.2009) with OpenHPC (1.3), Slurm 18.08.8, singularity 3.6.4 and bash 4.2.46(2).
+All processes were run on the Massachusetts Green High Performance Computing Center (MGHPCC, https://www.mghpcc.org/). MGHPCC is running CentOS (7.9.2009) with OpenHPC (1.3), Slurm 18.08.8, singularity 3.6.4 and bash 4.2.46(2). The script in this repository has been tested using msfragger 3.1.1., Philosopher 3.3.11. and IonQuant 1.7.2.
 
 # FragPipe
 
@@ -31,6 +31,7 @@ We suggest to download these and try to make the directory have the same strucut
     |-- tools
     |-- updates
     `-- workflows
+
 
 # Container
 
