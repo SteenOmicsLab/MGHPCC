@@ -17,7 +17,20 @@ All processes were run on the MASSACHUSETTS GREEN HIGH PERFORMANCE COMPUTING CEN
 
 The FragPipe software is a licensed, java based computational tools for the analysis of mass spectrometry based proteomics data. To run all processes of the Fragpipe toolkit one has to download FragPipe (https://github.com/Nesvilab/FragPipe/releases), MSFragger (http://msfragger-upgrader.nesvilab.org/upgrader/) and Philosopher (https://github.com/nesvilab/philosopher/releases/). 
 
+We suggest to download these and try to make the directory have the same strucutre as ours before moving it over to your HPC. See below a low-level schematic of our directory. A detailed schematic (tree) can be found HERE @@@@@@@@
 
+    msfragger/
+    |-- FASTA
+    |-- MSFragger-20171106
+    |-- Philosopher
+    |-- bin
+    |-- cache
+    |-- fragger.params
+    |-- jre
+    |-- lib
+    |-- tools
+    |-- updates
+    `-- workflows
 
 # Container
 
@@ -29,11 +42,9 @@ Running Fragpipe requires a containerized operating system, for which we use Ubu
 
 # FASTA file
 
-something something.
+MSFragger expects a fasta file with decoys using the "rev_" prefix. If you have a fasta file without decoys please use philosopher as described HERE @@@@@@@.
 
-The code expects a fasta file with decoys using the "rev_" prefix. If you have a fasta file without decoys please run:
-
-If you do have a fasta file with decoys but with a different prefix, it can be changed in the msfragger.sh script, line XXXX.
+If you do have a fasta file with decoys but with a different prefix, it can be changed in the msfragger.sh script, line @@@@@@.
 
 # MSfragger + PeptideProphet
 
@@ -89,4 +100,6 @@ In short, the script does the following:
 # IonQuant
 
 With the .quantindex files available we can now fully quantify the data. As described above the script will first build all the --psm variables, followed by running the IonQuant. Notice that --writeindex is set to False (0) here. Once quantification finished it means searching the data has completed. To reduce data storage we also clean the workspaces. We do this for the output directory, as well as within each sample directory.
+
+# Instructions
 
