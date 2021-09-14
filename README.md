@@ -100,7 +100,7 @@ With the .quantindex files available we can now fully quantify the data. As desc
 
 #### 1. Set up Fragpipe
 
-Download Msfragger, fragpipe and IonQuant and follow the directory structure as shown in the tree.
+Download Msfragger, fragpipe and IonQuant and follow the directory structure as shown in the tree. Copy to your HPC.
 
 #### 2. Build the Singularity container
 
@@ -111,7 +111,7 @@ run:
 
 #### 3. Make Logs and Scripts directory, download scripts
 
-We want to make a directory where we will keep all the scripts, as well as all the logs. For example:
+We want to make a directory for the scripts, and one for the logs. For example:
 
 
     mkdir logs
@@ -123,7 +123,7 @@ We want to make a directory where we will keep all the scripts, as well as all t
 
 #### 4. Update Sbatch commands
 
-In the directory where the scripts are cloned we have to update:
+In the directory where the scripts are cloned we have to do some manual updating:
 
 1. The Sbatch_*.sh SLURM parameters, which will depend on your local HPC.
 2. The location of the Singularity container.
@@ -131,7 +131,7 @@ In the directory where the scripts are cloned we have to update:
 
 #### 5. update the settings_userinput.sh file
 
-Please following instructions in the settings_userinput.sh file; update the versions of MSFragger, Philosopher and IonQuant 
+Please following instructions in the settings_userinput.sh file; update the versions of MSFragger, Philosopher and IonQuant.
 
 #### 6. Run
 
@@ -144,5 +144,5 @@ All should be set up. The combined.sh script can take care of the whole data pip
 
  Starting it could look like the following:
 
-    ./combined.sh /your_repository/timstoffiles/ /your_repository/results/ 30 /your_repository/FASTA/yourFASTA.fasta.fas
+    /your_repository/fragPipeScripts/combined.sh /your_repository/timstoffiles/ /your_repository/results/ 30 /your_repository/FASTA/yourFASTA.fasta.fas
 
