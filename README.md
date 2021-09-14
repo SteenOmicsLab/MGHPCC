@@ -1,21 +1,23 @@
 # Index
 1. Introduction
-2. Container @@@@@@@@@@@@@@@@ NUMBERING WRONG @@@@@@@@@@@@@@@@@@@@@
-2. Prequisites
-3. MSFragger + PeptideProphet
-4. ProteinProphet + Philosopher
-5. Write .quantindex
-6. IonQuant
+2. FragPipe
+3. Container
+4. FASTA
+5. MSFragger + PeptideProphet
+6. ProteinProphet + Philosopher
+7. Write .quantindex
+8. IonQuant
+9. Example / Instructions
 
-# Introduction
+# 1. Introduction
 
 The IMPACC study (DOI: 10.1126/sciimmunol.abf3733) is a prospective longitdinal study designed to enroll 1000 hospitalized patients, including the collection of blood specimen throughout the year. The Steen Lab at Boston Children's Hospital will be responsible for the proteomics analysis of those blood specimen. We expect to analye up to 10000 samples, which will result in an unprecedented amount of raw mass spectrometry data to analyse. FragPipe is known for its excellent speed and results with Bruker TimsTOF data (DOI: 10.1074/mcp.TIR120.002048), but analysis of such large quantities of samples is not feasible on a local computer. Instead, we have worked on implementing the FragPipe tools for High Performance Computing usage.
 
 All processes were run on the [Massachusetts Green High Performance Computing Center](https://www.mghpcc.org/). MGHPCC is running CentOS (7.9.2009) with OpenHPC (1.3), Slurm 18.08.8, singularity 3.6.4 and bash 4.2.46(2). The script in this repository has been tested using msfragger 3.1.1., Philosopher 3.3.11. and IonQuant 1.7.2.
 
-# FragPipe
+# 2. FragPipe
 
-The FragPipe software is a licensed, java based computational tools for the analysis of mass spectrometry based proteomics data. To run all processes of the Fragpipe toolkit one has to download [FragPipe](https://github.com/Nesvilab/FragPipe/releases), [MSFragger](http://msfragger-upgrader.nesvilab.org/upgrader/) and [Philosopher](https://github.com/nesvilab/philosopher/releases/). 
+The FragPipe software is a licensed, java based computational tool for the analysis of mass spectrometry based proteomics data. To run all processes of the Fragpipe toolkit one has to download [FragPipe](https://github.com/Nesvilab/FragPipe/releases), [MSFragger](http://msfragger-upgrader.nesvilab.org/upgrader/) and [Philosopher](https://github.com/nesvilab/philosopher/releases/). 
 
 We suggest to download these and try to make the directory have the same strucutre as ours before moving it over to your HPC. See below a low-level schematic of our directory. A detailed schematic (tree) can be found [here.](https://github.com/PatrickvanZalm/MGHPCC/tree/master/treeMsfragger)
 
@@ -33,17 +35,17 @@ We suggest to download these and try to make the directory have the same strucut
     `-- workflows
 
 
-# Container
+# 3. Container
 
 Running Fragpipe requires a containerized operating system, for which we use Ubuntu (20.04), java (jdk 8) and some other dependencies (see DockerFile). The container can be found on [DockerHub](https://hub.docker.com/repository/docker/patrickvanzalm/ubuntu_fragpipe)
 
-# FASTA file
+# 4. FASTA file
 
 MSFragger expects a fasta file with decoys using the "rev_" prefix. If you have a fasta file without decoys please use philosopher as described [here.](https://github.com/Nesvilab/philosopher/wiki/How-to-Prepare-a-Protein-Database)
 
 If you do have a fasta file with decoys but with a different prefix, it can be changed in the msfragger.sh script, line @@@@@@.
 
-# MSfragger + PeptideProphet
+# 5. MSfragger + PeptideProphet
 
 ![alt text](Images/fraggerpeptideprophet.png "Title")
 
@@ -68,7 +70,7 @@ Based on the user input the XXXX.sh script will determine the number of .d files
 
 **We noticed that if we do not copy the .d files to the node's local storage the speed was vastly reduced. During the loading of the .d file (i.e. writing the .mzBIN file) we observed a high number of read/write processes. Having the .d files locally on the Node compared to over the network vastly improved the speed. Please contact your HPC administrator if this is possible. 
 
-# ProteinProphet + Philosopher
+# 6. ProteinProphet + Philosopher
 
 ![alt text](Images/ProteinProphet.png "Title")
 
@@ -81,7 +83,7 @@ This script will run the following processes:
 6. Run iProphet for multi-level integration analysis
 7. Run Abacus to aggregate the data 
 
-# Write .quantindex
+# 7. Write .quantindex
 
 IonQuants speed is based on the (large) .quantindex files it writes for easy indexing. Similairy like MSfragger it uses the Bruker extension which currently only works single threaded. If .quantindex files are already written, IonQuant will skip the step which could potentially vastly improve speed. To parallelize the writing of quantindex files we build smaller batches and have multiple instances of IonQuant run simultaniously. Once all .quantindex files are written the IonQuant processes will be terminated.
 
@@ -90,11 +92,11 @@ In short, the script does the following:
 2. Run IonQuant, have the --writeindex parameter to true (1)
 3. Once IonQuant pushes the "Updating Philosopher" string to stdout kill the process.
 
-# IonQuant
+# 8. IonQuant
 
 With the .quantindex files available we can now fully quantify the data. As described above the script will first build all the --psm variables, followed by running the IonQuant. Notice that --writeindex is set to False (0) here. Once quantification finished it means searching the data has completed. To reduce data storage we also clean the workspaces. We do this for the output directory, as well as within each sample directory.
 
-# Instructions
+# 9. Example / Instructions 
 
 #### 1. Set up Fragpipe
 
