@@ -133,7 +133,11 @@ In the directory where the scripts are cloned we have to do some manual updating
 
 Please following instructions in the settings_userinput.sh file; update the versions of MSFragger, Philosopher and IonQuant.
 
-#### 6. Run
+#### 6. Copy Bruker .d data to your HPC
+
+Depending on your local HPC this will most likely be through SSH or a cloud-based storage, for which you could use [Rclone](https://rclone.org/)
+
+#### 7. Run
 
 All should be set up. The combined.sh script can take care of the whole data pipeline. The script required four inputs in the following order:
 
