@@ -2,7 +2,7 @@
 
 bash tree function on msfragger results. 
 
-    msfragger/
+    fragpipe/
     |-- MSFragger-20171106
     |   |-- LICENSE-3RD-PARTY.txt
     |   |-- MSFragger-20171106-Manual.pdf
