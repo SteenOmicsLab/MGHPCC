@@ -21,7 +21,7 @@ The FragPipe software is a licensed, java based computational tool for the analy
 
 We suggest to download these and try to make the directory have the same strucutre as ours before moving it over to your HPC. See below a low-level schematic of our directory. A detailed schematic (tree) can be found [here.](https://github.com/PatrickvanZalm/MGHPCC/tree/master/treeMsfragger)
 
-    msfragger/
+    fragpipe/
     |-- FASTA
     |-- MSFragger-20171106
     |-- Philosopher
