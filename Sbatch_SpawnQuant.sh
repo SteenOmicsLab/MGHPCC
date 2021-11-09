@@ -2,13 +2,13 @@
 
 #SBATCH --partition=mghpcc-compute 	#Queue to be used?
 #SBATCH --account=bch-mghpcc		#account name
-#SBATCH --time=2:00:00 		#5 days which is the max?
+#SBATCH --time=1:00:00 		#5 days which is the max?
 #SBATCH --job-name=QuantWriter		#Job name
 #SBATCH --mail-type=BEGIN,END,FAIL	
 #SBATCH --mail-user=patrick.vanzalm@childrens.harvard.edu
 #SBATCH --nodes=1 			#Number of Nodes needed
-#SBATCH --cpus-per-task=12		#Number of CPUS needed
-#SBATCH --mem=32GB			#Memory needed	
+#SBATCH --cpus-per-task=8		#Number of CPUS needed
+#SBATCH --mem=16GB			#Memory needed	
 #SBATCH --output=/project/Path-Steen/logs/IonQuantWriter_%A_%a.log #Name of the output file
 
 #Load Singularity on the Node

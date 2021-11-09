@@ -5,13 +5,15 @@ import sys
 #find all protein.tsv files that are directly in the sample file.
 #Note; in the hidden .meta file there is also a protein.tsv. We dont use that
 outputdirectory = str(sys.argv[1])
-directories = glob.glob(outputdirectory + "\*\protein.tsv")
+directories = glob.glob(outputdirectory + "/*/protein.tsv")
 
 #loop over each of the identified protein.tsv files.
 for i, name in enumerate(directories):
     
+    print(i)	
+	    
     #extract sample name    
-    sampleID = name.split("\\")[-2]
+    sampleID = name.split("/")[-2]
     
     #If the first 0 we call that the results file
     if i == 0:
@@ -89,4 +91,5 @@ for i, name in enumerate(directories):
     results = pd.merge(results, sample_i, how = "left", on = "Protein")
         
 #write to tsv format
-results.to_csv(outputdirectory + "\combined_protein.tsv", sep='\t', index = False)
+results.to_csv(outputdirectory + "/combined_protein.tsv", sep='\t', index = False)
+

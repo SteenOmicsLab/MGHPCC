@@ -7,16 +7,17 @@ cp -r /project/Path-Steen/msfragger/* /tmp/msfragger"$SLURM_JOBID"/
 chmod 770 -R /tmp/msfragger"$SLURM_JOBID"/
 chmod u+x /tmp/msfragger"$SLURM_JOBID"/tools/philosopher/philosopher
 
+
 #Go to the output directory, same as in the MSFragger script
 cd $outputdirectory
 
 #Run philosopher workspace to set up.
-$philosopherNonArrayPath workspace --clean --nocheck
-$philosopherNonArrayPath workspace --init --nocheck
-$philosopherNonArrayPath database --annotate $fastaFile --prefix $decoyPrefix
+#$philosopherNonArrayPath workspace --clean --nocheck
+#$philosopherNonArrayPath workspace --init --nocheck
+#$philosopherNonArrayPath database --annotate $fastaFile --prefix $decoyPrefix
 
 #Run ProteinProphet	
-$philosopherNonArrayPath proteinprophet --maxppmdiff 2000000 --output combined $(find ./ -name "*.pep.xml")
+#$philosopherNonArrayPath proteinprophet --maxppmdiff 2000000 --output combined $(find ./ -name "*.pep.xml")
 
 #Set up databases for each of the samples
 for myFile in $outputdirectory/*/
@@ -35,7 +36,7 @@ cd $outputdirectory
 for myFile in $outputdirectory/*/
 do
 	cd $(basename $myFile)
-	$philosopherNonArrayPath filter --sequential --razor --prot 0.01 --tag $decoyPrefix --pepxml ./ --protxml $outputdirectory/combined.prot.xml
+#	$philosopherNonArrayPath filter --sequential --razor --prot 0.01 --tag $decoyPrefix --pepxml ./ --protxml $outputdirectory/combined.prot.xml
 	cd ../
 done
 
@@ -45,14 +46,14 @@ cd $outputdirectory
 for myFile in $outputdirectory/*/
 do
 	cd $(basename $myFile)
-	$philosopherNonArrayPath report
+#	$philosopherNonArrayPath report
 	cd ../
 done
 
 cd $outputdirectory
 
 #Run iprophet. I follow a Fragpipe run here. Used 48 threads before. Upping it here
-$philosopherNonArrayPath iprophet --decoy rev_ --nonsp --output combined --threads 96 $(find ./ -name "*.pep.xml")
+#$philosopherNonArrayPath iprophet --decoy rev_ --nonsp --output combined --threads 96 $(find ./ -name "*.pep.xml")
 
 #set up some prestrings.
 prestring=' --psm ./'
@@ -76,7 +77,9 @@ done
 echo $abacusstring
 
 #run abacus
-$philosopherNonArrayPath abacus --razor --reprint --tag rev_ --protein --peptide $abacusstring
+#$philosopherNonArrayPath abacus --razor --reprint --tag rev_ --protein --peptide $abacusstring
+#$philosopherNonArrayPath abacus --razor --reprint --tag rev_ --protein $abacusstring  
+#$philosopherNetworkPath abacus --razor --reprint --tag rev_ --protein $abacusstring
 
 #Delete the directories
 rm -r /tmp/msfragger"$SLURM_JOBID"/

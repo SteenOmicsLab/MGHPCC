@@ -41,7 +41,7 @@ $philosopherPath workspace --clean --nocheck
 $philosopherPath workspace --init --nocheck
 
 #Next, we run MSFRAGGER. change xmx for the GB on your system
-java -Xmx32G -jar $msfraggerPath $fraggerParamsPath /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.d
+java -Xmx16G -jar $msfraggerPath $fraggerParamsPath /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.d
 
 #Move the pepXML files to output directory
 for myFile in  /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.d

@@ -114,7 +114,7 @@ done
 msfraggerArrayNumber=$((${#jobArray[@]} -1))
 
 # Sbatch the array. the -W argument will have it wait until ALL of them are done.
-sbatch --array=0-$msfraggerArrayNumber -W /project/Path-Steen/ShellScripts/Sbatch_MSfragger.sh "${jobArray[@]}"
+#sbatch --array=0-$msfraggerArrayNumber -W /project/Path-Steen/ShellScripts/Sbatch_MSfragger.sh "${jobArray[@]}"
 
 echo "MSFragger + peptideprophet done. Will now run ProteinProphet + Philosopher"
 
@@ -127,6 +127,15 @@ echo "MSFragger + peptideprophet done. Will now run ProteinProphet + Philosopher
 sbatch -W /project/Path-Steen/ShellScripts/Sbatch_ProteinProphet.sh $outputdirectory
 
 echo "ProteinProphet + Philosopher done. Will now write .quantindex files"
+
+##################
+#
+# PYTHON ####3
+#
+#################
+
+#sbatch -W /project/Path-Steen/ShellScripts/Sbatch_Python.sh $outputdirectory
+
 
 ##################
 #
@@ -178,7 +187,7 @@ done
 spawnQuantArrayNumber=$((${#jobArrayQuant[@]} -1))
 
 #Start array of Sbatches.
-sbatch --array=0-$spawnQuantArrayNumber -W /project/Path-Steen/ShellScripts/Sbatch_SpawnQuant.sh "${jobArrayQuant[@]}"
+#sbatch --array=0-$spawnQuantArrayNumber%50 -W /project/Path-Steen/ShellScripts/Sbatch_SpawnQuant.sh "${jobArrayQuant[@]}"
 
 echo "Writing quantindex files is done. Will now start IonQuant quantification."
 
