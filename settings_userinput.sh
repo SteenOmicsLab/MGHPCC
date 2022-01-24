@@ -13,6 +13,7 @@ msfraggerdirectory="/project/Path-Steen/msfragger/"
 
 #Please ONLY update MSFragger version. One can also change the decoy prefix if required.
 msfraggerPath="/tmp/msfragger"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/MSFragger-20171106/MSFragger-3.3/MSFragger-3.3.jar" # download from http://msfragger-upgrader.nesvilab.org/upgrader/
+#msfraggerPath="/project/Path-Steen/msfragger/MSFragger-20171106/MSFragger-3.3/MSFragger-3.3.jar"
 fraggerParamsPath="/tmp/msfragger"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/fragger.params"
 philosopherPath="/tmp/msfragger"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/tools/philosopher/philosopher" # download from https://github.com/Nesvilab/philosopher/releases/latest
 ionquantPath="/tmp/msfragger"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/MSFragger-20171106/MSFragger-3.1.1/IonQuant-1.7.2-jar-with-dependencies.jar"

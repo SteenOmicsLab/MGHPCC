@@ -1,5 +1,9 @@
 #!/bin/bash
-source /project/Path-Steen/ShellScripts/settings.sh
+
+#Have to set the LC_ALL. Not really sure why?
+export LC_ALL=C
+
+source /project/Path-Steen/MGHPCC/settings.sh
 
 #make msfragger directory, Copy Msfragger, give chmods
 mkdir -p /tmp/msfragger"$SLURM_JOBID"/
@@ -23,9 +27,9 @@ cd $outputdirectory
 for myFile in $outputdirectory/*/
 do
 	cd $(basename $myFile)
-	$philosopherNonArrayPath workspace --clean --nocheck
-	$philosopherNonArrayPath workspace --init --nocheck
-	$philosopherNonArrayPath database --annotate $fastaFile --prefix $decoyPrefix
+#	$philosopherNonArrayPath workspace --clean --nocheck
+#	$philosopherNonArrayPath workspace --init --nocheck
+#	$philosopherNonArrayPath database --annotate $fastaFile --prefix $decoyPrefix
 	cd ../
 done
 
@@ -53,7 +57,7 @@ done
 cd $outputdirectory
 
 #Run iprophet. I follow a Fragpipe run here. Used 48 threads before. Upping it here
-#$philosopherNonArrayPath iprophet --decoy rev_ --nonsp --output combined --threads 96 $(find ./ -name "*.pep.xml")
+$philosopherNonArrayPath iprophet --decoy rev_ --nonsp --output combined --threads 96 $(find ./ -name "*.pep.xml")
 
 #set up some prestrings.
 prestring=' --psm ./'

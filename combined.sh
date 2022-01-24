@@ -1,5 +1,5 @@
 #!/bin/bash
-#source /project/Path-Steen/ShellScripts/settings.sh
+#source /project/Path-Steen/MGHPCC/settings.sh
 
 #We grab 3!! inputs from the user: directory where .d files are. Directory where results should go, and the FASTA file.
 inputdirectory=$1
@@ -114,7 +114,7 @@ done
 msfraggerArrayNumber=$((${#jobArray[@]} -1))
 
 # Sbatch the array. the -W argument will have it wait until ALL of them are done.
-#sbatch --array=0-$msfraggerArrayNumber -W /project/Path-Steen/ShellScripts/Sbatch_MSfragger.sh "${jobArray[@]}"
+sbatch --array=0-$msfraggerArrayNumber -W /project/Path-Steen/MGHPCC/Sbatch_MSfragger.sh "${jobArray[@]}"
 
 echo "MSFragger + peptideprophet done. Will now run ProteinProphet + Philosopher"
 
@@ -124,7 +124,7 @@ echo "MSFragger + peptideprophet done. Will now run ProteinProphet + Philosopher
 #
 ##################
 
-sbatch -W /project/Path-Steen/ShellScripts/Sbatch_ProteinProphet.sh $outputdirectory
+#sbatch -W /project/Path-Steen/MGHPCC/Sbatch_ProteinProphet.sh $outputdirectory
 
 echo "ProteinProphet + Philosopher done. Will now write .quantindex files"
 
@@ -199,21 +199,11 @@ echo "Writing quantindex files is done. Will now start IonQuant quantification."
 
 #Run the Ionquant script. Once finished it will also clean the workspaces.
 
-sbatch -W /project/Path-Steen/ShellScripts/Sbatch_IonQuant.sh
+#sbatch -W /project/Path-Steen/ShellScripts/Sbatch_IonQuant.sh
 
 echo "Quantification done. All steps done. Fragpipe Finished."
 
 #Note to self; maybe check the number of samples of input vs output.
 #If they are not equal, see which samples are missing.
-
-
-
-
-
-
-
-
-
-
 
 

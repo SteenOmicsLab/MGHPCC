@@ -1,7 +1,10 @@
 #!/bin/bash
 
+#Have to set the LC_ALL. Not really sure why?
+export LC_ALL=C
+
 #Grab settings, set fastafile path from settings.sh
-source /project/Path-Steen/ShellScripts/settings.sh
+source /project/Path-Steen/MGHPCC/settings.sh
 
 #Inputfiles
 inputFiles=$1
@@ -16,13 +19,12 @@ mkdir -p /tmp/outputfiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/
 
 ##Copy Msfragger, give chmods
 cp -r $msfraggerdirectory/* /tmp/msfragger"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/
-chmod 770 -R /tmp/msfragger"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/
+chmod 777 -R /tmp/msfragger"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/
 chmod u+x /tmp/msfragger"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/tools/philosopher/philosopher
 
 #change the fragger.params so it ALSO includes the correct fastafile.
 databaseTemp="database_name = "
 sed -i "1s|.*|$databaseTemp$fastaFile|" $fraggerParamsPath
-cat $fraggerParamsPath
 
 #Copy the files that were input on the Sbatch/SLURM input
 cp -r $1 /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/
@@ -62,6 +64,8 @@ if (( $inputNumber == $pepXMLNumber))
 then
 	#Copy results
 	cp -r /tmp/outputfiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/* $outputdirectory
+	cp /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.mzBIN $inputdirectory
+	cp /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.mgf $inputdirectory
 else
 	echo "Something did go wrong. The number of .pep.xml files did not correspond with the number of samples in this batch"
 fi
