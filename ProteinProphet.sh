@@ -57,7 +57,7 @@ done
 cd $outputdirectory
 
 #Run iprophet. I follow a Fragpipe run here. Used 48 threads before. Upping it here
-$philosopherNonArrayPath iprophet --decoy rev_ --nonsp --output combined --threads 96 $(find ./ -name "*.pep.xml")
+#$philosopherNonArrayPath iprophet --decoy rev_ --nonsp --output combined --threads 96 $(find ./ -name "*.pep.xml")
 
 #set up some prestrings.
 prestring=' --psm ./'
@@ -81,7 +81,7 @@ done
 echo $abacusstring
 
 #run abacus
-#$philosopherNonArrayPath abacus --razor --reprint --tag rev_ --protein --peptide $abacusstring
+$philosopherNonArrayPath abacus --razor --reprint --tag rev_ --peptide $abacusstring
 #$philosopherNonArrayPath abacus --razor --reprint --tag rev_ --protein $abacusstring  
 #$philosopherNetworkPath abacus --razor --reprint --tag rev_ --protein $abacusstring
 
