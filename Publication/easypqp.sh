@@ -18,3 +18,4 @@ do
 done
 
 
+#singularity exec --bind /project/:/project/ /project/Path-Steen/easypqp easypqp library --psmtsv psm.tsv --peptidetsv peptide.tsv --out easypqp_lib_openswath.tsv --rt_lowess_fraction 0.0 pskmpeakpkl.txt
