@@ -66,7 +66,7 @@ mkdir -p $outputdirectory/settings
 mkdir -p $outputdirectory/results
 
 #copy settings.sh, fraggerparams and fasta to settings directory
-cp $ScriptsLocation/* $outputdirectory/settings/
+cp -r $ScriptsLocation/* $outputdirectory/settings/
 cp $fraggerparamsFile $outputdirectory/settings/
 cp $fastaFile $outputdirectory/settings/
 

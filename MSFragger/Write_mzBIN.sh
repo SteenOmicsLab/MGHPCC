@@ -54,11 +54,12 @@ cat $fraggerParamsTempPath
 java -Xmx16G -jar $msfraggerPath $fraggerParamsTempPath /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.d
 
 #identify the number of mzBIN files
+Brukernumber=$(find /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.d -maxdepth 0 -type d | wc -l)
 mzBINnumber=$(find /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.mzBIN -type f | wc -l)
 
 #if numberOfFilesPerBatch is not equal to number of mzBIN something went wrong and we throw error. Otherwise, the copy the mzBIN files over.
 #If inputNumber and pepXMLNumber are not equal it means all went fine. If not, it should not copy, and echo print that something went wrong.
-if (( $numberOfFilesPerBatch == $mzBINnumber))
+if (( $Brukernumber == $mzBINnumber))
 then
 	#Copy mzBIN and .mgf
 	cp /tmp/timstoffiles"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*.mzBIN $inputdirectory
