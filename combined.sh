@@ -1,11 +1,25 @@
 #!/bin/bash
-#source /project/Path-Steen/MGHPCC/settings.sh
 
-#We grab 3!! inputs from the user: directory where .d files are. Directory where results should go, and the FASTA file.
+# This is the script to run all Fragpipe tools in a parallelized manner on a HPC.
+# By Patrick van Zalm (patrick.vanzalm@childrens.harvard.edu / patrickvanzalm@gmail.com)
+# Steen lab, Boston Childrens's Hospital, Boston, Massachussets, United States of America
+
+#### NOTE ####
+# A User should ALWAYS first fill in the required settings in the settings.sh file 
+# before running the script below.
+
+# Script requires five inputs:
+# 1. Input Directory
+# 2. Output Directory
+# 3. FASTA file
+# 4. Fragger.params file
+# 5. Location of all the scripts
+
 inputdirectory=$1
 outputdirectory=$2
-numberOfFilesPerBatch=$3
-fastaFile=$4
+fastaFile=$3
+fraggerparamsFile=$4
+ScriptsLocation=$5
 
 #check if inputdirectory is a directory. If not; kill process
 if [[ ! -d "$inputdirectory" ]]
@@ -45,21 +59,38 @@ else
 	kill $$
 fi
 
-#If all directories are succesful we will now change this in the settings.sh file
+# If this is all correct we will design the ouputdirectory
+# We make a directory for the results, logs and settings
+mkdir -p $outputdirectory/logs
+mkdir -p $outputdirectory/settings
+mkdir -p $outputdirectory/results
 
-#Copy the settings file which we will change based on user input.
-cp settings_userinput.sh settings.sh
+#copy settings.sh, fraggerparams and fasta to settings directory
+cp $ScriptsLocation/* $outputdirectory/settings/
+cp $fraggerparamsFile $outputdirectory/settings/
+cp $fastaFile $outputdirectory/settings/
 
-#Change key parameters in settings.sh based on userinput
-sed -i "s|INPUTDIRECTORY|$inputdirectory|" settings.sh
-sed -i "s|OUTPUTDIRECTORY|$outputdirectory|" settings.sh
-sed -i "s|FASTAFILE|$fastaFile|" settings.sh
+#chmod the scripts
+chmod 770 $outputdirectory/settings/*
 
-###############################
-#
-## MSFRAGGER + PeptideProphet
-#
-##############################
+#all other scripts will take info from the settings.sh script. We append some info there as given by user
+echo -e "\n\n# USER INPUT SETTINGS" >> $outputdirectory/settings/settings.sh
+echo "ScriptsLocation=$ScriptsLocation" >> $outputdirectory/settings/settings.sh
+echo "inputdirectory=$inputdirectory" >> $outputdirectory/settings/settings.sh
+echo "outputdirectory=$outputdirectory" >> $outputdirectory/settings/settings.sh
+echo "fastaFile=$outputdirectory/settings/$(basename ${fastaFile})" >> $outputdirectory/settings/settings.sh
+echo "fraggerParamsNetworkPath=$outputdirectory/settings/$(basename ${fraggerparamsFile})" >> $outputdirectory/settings/settings.sh
+
+#We can now source those settings.
+source $outputdirectory/settings/settings.sh
+
+#Alter the FASTA file location in the fragger.params file
+databaseTemp="database_name = "
+sed -i "1s|.*|$databaseTemp$fastaFile|" $fraggerParamsNetworkPath
+
+######################
+## Prepare Batching ##
+######################
 
 #Make array with the bruker files
 arraybruker=($(find $inputdirectory -maxdepth 1 -name "*.d"))
@@ -110,100 +141,113 @@ do
         fi
 done
 
+#Write the array to a temp file so we can read it in the Sbatch script
+for j in "${jobArray[@]}"
+do
+      echo $j 
+done >$outputdirectory/settings/write_MZbin.txt
+
 #Set up array number for sbatch (total number of items in array MINUS 1)
 msfraggerArrayNumber=$((${#jobArray[@]} -1))
 
-# Sbatch the array. the -W argument will have it wait until ALL of them are done.
-sbatch --array=0-$msfraggerArrayNumber -W /project/Path-Steen/MGHPCC/Sbatch_MSfragger.sh "${jobArray[@]}"
+#determine number of mzBIN
+numberFilesmzBIN=$(find $inputdirectory -maxdepth 1 -name "*.mzBIN" | wc -l)
 
-echo "MSFragger + peptideprophet done. Will now run ProteinProphet + Philosopher"
-
-###################
-#
-# ProteinProphet + Philosopher
-#
-##################
-
-#sbatch -W /project/Path-Steen/MGHPCC/Sbatch_ProteinProphet.sh $outputdirectory
-
-echo "ProteinProphet + Philosopher done. Will now write .quantindex files"
-
-##################
-#
-# PYTHON ####3
-#
+#################
+## WRITE mzBIN ##
 #################
 
-#sbatch -W /project/Path-Steen/ShellScripts/Sbatch_Python.sh $outputdirectory
+#Determine number of mzBIN files in the directory. If corresponds to number of bruker .d we run msfragger
+#If not; we run the write mzbin scripts first to parallelize the writing process
+if (( $numberFiles != $numberFilesmzBIN))
+then
+        echo "Uneven number of .d files and mzBIN files observed: will write all mzBIN first"
+        sbatch --array=0-$msfraggerArrayNumber\
+         --output=$outputdirectory/logs/write_mzBIN_%A_%a.log\
+         -W\
+         "$outputdirectory/settings/Sbatch_write_mzBIN.sh" "$outputdirectory"  
+        echo "Writing of mzBIN finished."
+fi
 
-
-##################
-#
-# QuantindexWriter
-#
+#################
+##  MSFRAGGER  ##
 #################
 
-#Make array with the bruker files
-arrayOutputbruker=($(find $outputdirectory*/*.pepXML -maxdepth 1 -type f ))
+# mzBIN should be written. We can run MSFragger now.
 
-#Determine number of bruker files
-numberOutputFiles=$(find $outputdirectory*/*.pepXML -maxdepth 1 -type f | wc -l)
+# echo "Run MSFragger"
+# sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
+#          -W\
+#          "$outputdirectory/settings/Sbatch_MSFragger.sh" "$outputdirectory"  
+# echo "MSFragger finished"
 
-#Calculate the number of batches. This would be the total number of files, divided by 3. 
-#Then we round down, because the last batch will also include the left over ones (if applicable)
-numberOfBatches=$(($numberOutputFiles / 3))
+####################
+## peptideProphet ##
+####################
 
-#Calculate the modulo. We do this so that the last batch will also include the "left over" ones.
-moduloOfSamples=$(($numberOutputFiles % 3))
+# Run peptideprophet in parallel. Use same batching as for writing mzBIN
 
-#Calculate number of files excluding modulo minus one. This will limit the for loop so it wont run a small batch. 
-numberFilesNoModulo=$(($numberOutputFiles - $moduloOfSamples - 1))
+# echo "Run batched peptideProphet"
+# sbatch --array=0-$msfraggerArrayNumber\
+#          --output=$outputdirectory/logs/peptideProphet_%A_%a.log\
+#          -W\
+#          "$outputdirectory/settings/Sbatch_peptideProphet.sh" "$outputdirectory"
+# echo "peptideProphet finished"
 
-#For loop that will create array with the batches we want to run. 
-#will create N amount of batches, based on the number of input samples.
-#Last batch will include modulo.
-declare -a jobArrayQuant=()
-number=0
-for i in $(seq 0 3 $numberFilesNoModulo);
-do
-        number=$(($number+1))
-        #if modulo      
-        if (( $number == $numberOfBatches))
-        then
-                numberOfFilesPerBatchAndModulo=$((3 + $moduloOfSamples))
-                files="${arrayOutputbruker[@]:$i:$numberOfFilesPerBatchAndModulo}"
-                jobArrayQuant+=("$files")
-        fi
+####################
+## proteinProphet ##
+##   databases    ##
+##    filter      ##
+##    report      ##
+####################
 
-        #if not modulo
-        if (( $number != $numberOfBatches))
-        then
-                files="${arrayOutputbruker[@]:$i:3}"
-                jobArrayQuant+=("$files")
-        fi
-done
+#All are single threaded processes that require little computational power
+# echo "Run ProteinProphet, database, filter and report"
+# sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
+#          -W\
+#          "$outputdirectory/settings/Sbatch_proteinProphet.sh" "$outputdirectory"  
+# echo "ProteinProphet, database, filter and report finished"
 
-#Set up array number for sbatch (total number of items in array MINUS 1)
-spawnQuantArrayNumber=$((${#jobArrayQuant[@]} -1))
+####################
+##    iProphet    ##
+####################
 
-#Start array of Sbatches.
-#sbatch --array=0-$spawnQuantArrayNumber%50 -W /project/Path-Steen/ShellScripts/Sbatch_SpawnQuant.sh "${jobArrayQuant[@]}"
+#All are single threaded processes that require little computational power
+# echo "Run iProphet"
+# sbatch --output=$outputdirectory/logs/iProphet_%A.log\
+#          -W\
+#          "$outputdirectory/settings/Sbatch_iProphet.sh" "$outputdirectory"  
+# echo "iProphet finished"
 
-echo "Writing quantindex files is done. Will now start IonQuant quantification."
 
-#######################
-#
-### IonQuant 
-#
+######################
+## WRITE quantindex ##
 ######################
 
-#Run the Ionquant script. Once finished it will also clean the workspaces.
+#determine number of quantindex
+echo "Checking if all quantindex files are written...."
+numberFilesquantindex=$(find $inputdirectory -maxdepth 1 -name "*.quantindex" | wc -l)
 
-#sbatch -W /project/Path-Steen/ShellScripts/Sbatch_IonQuant.sh
+#Determine number of mzBIN files in the directory. If corresponds to number of bruker .d we run msfragger
+#If not; we run the write mzbin scripts first to parallelize the writing process
+if (( $numberFiles != $numberFilesquantindex))
+then
+        echo "Uneven number of .d files and quantindex files observed: will write all quantindex first"
+        sbatch --array=0-$msfraggerArrayNumber\
+         --output=$outputdirectory/logs/write_quantindex_%A_%a.log\
+         -W\
+         "$outputdirectory/settings/Sbatch_write_quantindex.sh" "$outputdirectory"  
+        echo "Writing of quantindex finished."
+fi
+echo "All quantindex are written and/or found."
 
-echo "Quantification done. All steps done. Fragpipe Finished."
+#################
+##  IonQuant   ##
+#################
+# quantindex should be written. We can run IonQuant now.
 
-#Note to self; maybe check the number of samples of input vs output.
-#If they are not equal, see which samples are missing.
-
-
+echo "Run IonQuant"
+sbatch --output=$outputdirectory/logs/IonQuant_%A.log\
+         -W\
+         "$outputdirectory/settings/Sbatch_IonQuant.sh" "$outputdirectory"  
+echo "IonQuant finished"
