@@ -16,4 +16,4 @@ source $1/settings/settings.sh
 module load singularity
 
 #Run job
-singularity exec --bind $inputdirectory,$outputdirectory,$fragpipeDirectory $container $1/settings/MSFragger.sh "$1" 
+singularity exec --bind $inputdirectory,$outputdirectory,$fragpipeDirectory $container $1/settings/MSFragger/MSFragger.sh "$1" 

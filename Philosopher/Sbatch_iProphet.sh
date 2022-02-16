@@ -16,4 +16,4 @@ source $1/settings/settings.sh
 module load singularity
 
 #Run job
-singularity exec --bind $inputdirectory,$outputdirectory,$fragpipeDirectory $container $1/settings/iProphet.sh "$1" 
+singularity exec --bind $inputdirectory,$outputdirectory,$fragpipeDirectory $container $1/settings/Philosopher/iProphet.sh "$1" 

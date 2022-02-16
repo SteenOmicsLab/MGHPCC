@@ -165,7 +165,7 @@ then
         sbatch --array=0-$msfraggerArrayNumber\
          --output=$outputdirectory/logs/write_mzBIN_%A_%a.log\
          -W\
-         "$outputdirectory/settings/Sbatch_write_mzBIN.sh" "$outputdirectory"  
+         "$outputdirectory/settings/MSFragger/Sbatch_write_mzBIN.sh" "$outputdirectory"  
         echo "Writing of mzBIN finished."
 fi
 
@@ -174,25 +174,23 @@ fi
 #################
 
 # mzBIN should be written. We can run MSFragger now.
-
-# echo "Run MSFragger"
-# sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
-#          -W\
-#          "$outputdirectory/settings/Sbatch_MSFragger.sh" "$outputdirectory"  
-# echo "MSFragger finished"
+echo "Run MSFragger"
+sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
+         -W\
+         "$outputdirectory/settings/MSFragger/Sbatch_MSFragger.sh" "$outputdirectory"  
+echo "MSFragger finished"
 
 ####################
 ## peptideProphet ##
 ####################
 
 # Run peptideprophet in parallel. Use same batching as for writing mzBIN
-
-# echo "Run batched peptideProphet"
-# sbatch --array=0-$msfraggerArrayNumber\
-#          --output=$outputdirectory/logs/peptideProphet_%A_%a.log\
-#          -W\
-#          "$outputdirectory/settings/Sbatch_peptideProphet.sh" "$outputdirectory"
-# echo "peptideProphet finished"
+echo "Run batched peptideProphet"
+sbatch --array=0-$msfraggerArrayNumber\
+         --output=$outputdirectory/logs/peptideProphet_%A_%a.log\
+         -W\
+         "$outputdirectory/settings/Philosopher/Sbatch_peptideProphet.sh" "$outputdirectory"
+echo "peptideProphet finished"
 
 ####################
 ## proteinProphet ##
@@ -202,22 +200,22 @@ fi
 ####################
 
 #All are single threaded processes that require little computational power
-# echo "Run ProteinProphet, database, filter and report"
-# sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
-#          -W\
-#          "$outputdirectory/settings/Sbatch_proteinProphet.sh" "$outputdirectory"  
-# echo "ProteinProphet, database, filter and report finished"
+echo "Run ProteinProphet, database, filter and report"
+sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
+         -W\
+         "$outputdirectory/settings/Philosopher/Sbatch_proteinProphet.sh" "$outputdirectory"  
+echo "ProteinProphet, database, filter and report finished"
 
 ####################
 ##    iProphet    ##
 ####################
 
 #All are single threaded processes that require little computational power
-# echo "Run iProphet"
-# sbatch --output=$outputdirectory/logs/iProphet_%A.log\
-#          -W\
-#          "$outputdirectory/settings/Sbatch_iProphet.sh" "$outputdirectory"  
-# echo "iProphet finished"
+echo "Run iProphet"
+sbatch --output=$outputdirectory/logs/iProphet_%A.log\
+         -W\
+         "$outputdirectory/settings/Philosopher/Sbatch_iProphet.sh" "$outputdirectory"  
+echo "iProphet finished"
 
 
 ######################
@@ -236,7 +234,7 @@ then
         sbatch --array=0-$msfraggerArrayNumber\
          --output=$outputdirectory/logs/write_quantindex_%A_%a.log\
          -W\
-         "$outputdirectory/settings/Sbatch_write_quantindex.sh" "$outputdirectory"  
+         "$outputdirectory/settings/IonQuant/Sbatch_write_quantindex.sh" "$outputdirectory"  
         echo "Writing of quantindex finished."
 fi
 echo "All quantindex are written and/or found."
@@ -249,5 +247,5 @@ echo "All quantindex are written and/or found."
 echo "Run IonQuant"
 sbatch --output=$outputdirectory/logs/IonQuant_%A.log\
          -W\
-         "$outputdirectory/settings/Sbatch_IonQuant.sh" "$outputdirectory"  
+         "$outputdirectory/settings/IonQuant/Sbatch_IonQuant.sh" "$outputdirectory"  
 echo "IonQuant finished"

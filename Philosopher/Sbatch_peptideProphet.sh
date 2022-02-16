@@ -16,4 +16,4 @@ source $1/settings/settings.sh
 module load singularity
 
 #Run job
-singularity exec --bind $inputdirectory,$outputdirectory,$fragpipeDirectory $container $1/settings/peptideProphet.sh "$1" "$SLURM_JOBID" "$SLURM_ARRAY_TASK_ID"
+singularity exec --bind $inputdirectory,$outputdirectory,$fragpipeDirectory $container $1/settings/Philosopher/peptideProphet.sh "$1" "$SLURM_JOBID" "$SLURM_ARRAY_TASK_ID"
