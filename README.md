@@ -38,9 +38,11 @@ In the directory where the scripts are cloned we have to do some manual updating
 1. The Sbatch_*.sh SLURM parameters, which will depend on your local HPC.
 2. the settings.sh file where you specify locations of Fragpipe directories and executables, location of Singularity container and prefix.
 
-#### 5. 
+#### 5. Update User Specific Settings
 
 Specify settings in the fragger.params file (for MSFragger) or more specific settings in the scripts if one would want to.
+
+NOTE: Code assumed that FASTA file already inclused decoys. If not one can use [Philosopher](https://github.com/Nesvilab/philosopher/wiki/How-to-Prepare-a-Protein-Database)
 
 #### 6. Copy Bruker .d data to your HPC
 
@@ -57,9 +59,7 @@ All should be set up. The combined.sh script can take care of the whole data pip
 5. Location of all the scripts as provided in this repository
 
  Starting it could look like the following:
-
-    /your_repository/fragPipeScripts/combined.sh /your_repository/timstoffiles/ /your_repository/results/ 30 /your_repository/FASTA/yourFASTA.fasta.fas
+ 
     /your_repository/fragPipeScripts/combined.sh /your_repository/timstoffiles/ /your_repository/results/ /your_repository/FASTA/MyFASTAfile.fasta.fas /your_repository/fragger.params /your_repository/FragpipeScripts/
 
-NOTE: Code assumed that FASTA file already inclused decoys. If not one can use [Philosopher](https://github.com/Nesvilab/philosopher/wiki/How-to-Prepare-a-Protein-Database)
 
