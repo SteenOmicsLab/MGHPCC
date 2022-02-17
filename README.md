@@ -1,4 +1,4 @@
-# Fragpipe Script on High Performance Computing
+# Fragpipe Scripts on High Performance Computing
 
 To facilitate speedy processing of large-scale proteomic studies we utilize High Performance Computing (HPC) and fragpipe. MSFragger 3.4, Philosopher 4.1.1 and IonQuant 1.7.17 were used and tested. On the HPC we have CentOS (7.9.2009) with OpenHPC (1.3), Slurm 18.08.8, singularity 3.6.4 and bash 4.2.46(2). A docker container was build with Ubuntu 20.04 with the dependencies as shown in the Dockerfile. The Docker container was transformed to a singularity container.
 
@@ -8,8 +8,13 @@ due to licensing of Fragpipe software we decided to keep all the required Fragpi
 
 ```mermaid
   graph TD;
-      A-->B;
-      A-->C;
-      B-->D;
-      C-->D;
+    A[combined.sh] -->|Specify input| B(check if all mzBIN are there);
+    B-->|no| C[Parallel: build_mzBIN] -->D[MSFragger];
+    B-->|yes| D[MSFragger];
+    D--> E[Parallel: PeptideProphet];
+    E --> F[ProteinProphet & Filter];
+    F --> G[iProphet];
+    G[iProphet] --> H(check if all quantindex are there);
+    H-->|no| I[Parallel: build_quantindex] -->J[IonQuant];
+    H-->|yes| J[IonQuant];
 ```
