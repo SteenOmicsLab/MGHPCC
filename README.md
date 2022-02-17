@@ -17,4 +17,5 @@ due to licensing of Fragpipe software we decided to keep all the required Fragpi
     G[iProphet] --> H(check if all quantindex are there);
     H-->|no| I[Parallel: build_quantindex] -->J[IonQuant];
     H-->|yes| J[IonQuant];
+    {"theme":"forest"}
 ```
