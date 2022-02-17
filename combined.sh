@@ -88,6 +88,10 @@ source $outputdirectory/settings/settings.sh
 databaseTemp="database_name = "
 sed -i "1s|.*|$databaseTemp$fastaFile|" $fraggerParamsNetworkPath
 
+#chmod the tools for the networkpath usage
+chmod 777 -R $fragpipeDirectory
+chmod u+x $philosopherNetworkPath
+
 ######################
 ## Prepare Batching ##
 ######################

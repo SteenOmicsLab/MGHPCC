@@ -36,7 +36,7 @@ do
 done
 
 #run writing of quantindex
-java -Xmx16G -jar $ionquantPath --threads 2 --ionmobility 1 --proteinquant 2\
+java -Xmx16G -jar $ionquantPath --threads 2 --ionmobility 1\
  --requantify 1 --mztol 10 --imtol 0.05 --rttol 0.4 --mbrmincorr 0 --mbrrttol 1\
   --mbrimtol 0.05 --mbrtoprun 10 --ionfdr 0.01 --proteinfdr 1 --peptidefdr 1 --normalization 1\
    --minisotopes 2 --writeindex 1 --tp 3 --minfreq 0.5 --minions 1 --minexps 1\
