@@ -6,6 +6,6 @@ due to licensing of Fragpipe software we decided to keep all the required Fragpi
 
 # Schematic
 
-<img align="right" width="100" height="100" src="Images/scriptHPCFragpipe.png">
+<img align="right" src="Images/scriptHPCFragpipe.png">
 
 Here I would put my text
