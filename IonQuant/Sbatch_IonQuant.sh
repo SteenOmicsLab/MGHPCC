@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --partition=mghpcc-interactive 	#Queue to be used?
+#SBATCH --partition=mghpcc-compute 	#Queue to be used?
 #SBATCH --account=bch-mghpcc		#account name
-#SBATCH --time=2:00:00 		#12 hours. Normal search (i.e. tryptic, Oxidation and acetylation) will take +- 2 hours with 30 input files...
+#SBATCH --time=24:00:00 		#12 hours. Normal search (i.e. tryptic, Oxidation and acetylation) will take +- 2 hours with 30 input files...
 #SBATCH --job-name=IonQuant 		#Job name
 #SBATCH --nodes=1			#Number of Nodes needed
 #SBATCH --cpus-per-task=96		#Number of CPUS needed

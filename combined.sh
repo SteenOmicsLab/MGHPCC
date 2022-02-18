@@ -178,11 +178,11 @@ fi
 #################
 
 # mzBIN should be written. We can run MSFragger now.
-echo "Run MSFragger"
-sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
-         -W\
-         "$outputdirectory/settings/MSFragger/Sbatch_MSFragger.sh" "$outputdirectory"  
-echo "MSFragger finished"
+# echo "Run MSFragger"
+# sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
+#          -W\
+#          "$outputdirectory/settings/MSFragger/Sbatch_MSFragger.sh" "$outputdirectory"  
+# echo "MSFragger finished"
 
 ####################
 ## peptideProphet ##
@@ -204,22 +204,22 @@ echo "peptideProphet finished"
 ####################
 
 #All are single threaded processes that require little computational power
-echo "Run ProteinProphet, database, filter and report"
-sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
-         -W\
-         "$outputdirectory/settings/Philosopher/Sbatch_proteinProphet.sh" "$outputdirectory"  
-echo "ProteinProphet, database, filter and report finished"
+# echo "Run ProteinProphet, database, filter and report"
+# sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
+#          -W\
+#          "$outputdirectory/settings/Philosopher/Sbatch_proteinProphet.sh" "$outputdirectory"  
+# echo "ProteinProphet, database, filter and report finished"
 
 ####################
 ##    iProphet    ##
 ####################
 
 #All are single threaded processes that require little computational power
-echo "Run iProphet"
-sbatch --output=$outputdirectory/logs/iProphet_%A.log\
-         -W\
-         "$outputdirectory/settings/Philosopher/Sbatch_iProphet.sh" "$outputdirectory"  
-echo "iProphet finished"
+# echo "Run iProphet"
+# sbatch --output=$outputdirectory/logs/iProphet_%A.log\
+#          -W\
+#          "$outputdirectory/settings/Philosopher/Sbatch_iProphet.sh" "$outputdirectory"  
+# echo "iProphet finished"
 
 
 ######################
@@ -227,29 +227,29 @@ echo "iProphet finished"
 ######################
 
 #determine number of quantindex
-echo "Checking if all quantindex files are written...."
-numberFilesquantindex=$(find $inputdirectory -maxdepth 1 -name "*.quantindex" | wc -l)
+# echo "Checking if all quantindex files are written...."
+# numberFilesquantindex=$(find $inputdirectory -maxdepth 1 -name "*.quantindex" | wc -l)
 
-#Determine number of mzBIN files in the directory. If corresponds to number of bruker .d we run msfragger
-#If not; we run the write mzbin scripts first to parallelize the writing process
-if (( $numberFiles != $numberFilesquantindex))
-then
-        echo "Uneven number of .d files and quantindex files observed: will write all quantindex first"
-        sbatch --array=0-$msfraggerArrayNumber\
-         --output=$outputdirectory/logs/write_quantindex_%A_%a.log\
-         -W\
-         "$outputdirectory/settings/IonQuant/Sbatch_write_quantindex.sh" "$outputdirectory"  
-        echo "Writing of quantindex finished."
-fi
-echo "All quantindex are written and/or found."
+# #Determine number of mzBIN files in the directory. If corresponds to number of bruker .d we run msfragger
+# #If not; we run the write mzbin scripts first to parallelize the writing process
+# if (( $numberFiles != $numberFilesquantindex))
+# then
+#         echo "Uneven number of .d files and quantindex files observed: will write all quantindex first"
+#         sbatch --array=0-$msfraggerArrayNumber\
+#          --output=$outputdirectory/logs/write_quantindex_%A_%a.log\
+#          -W\
+#          "$outputdirectory/settings/IonQuant/Sbatch_write_quantindex.sh" "$outputdirectory"  
+#         echo "Writing of quantindex finished."
+# fi
+# echo "All quantindex are written and/or found."
 
 #################
 ##  IonQuant   ##
 #################
 # quantindex should be written. We can run IonQuant now.
 
-echo "Run IonQuant"
-sbatch --output=$outputdirectory/logs/IonQuant_%A.log\
-         -W\
-         "$outputdirectory/settings/IonQuant/Sbatch_IonQuant.sh" "$outputdirectory"  
-echo "IonQuant finished"
+# echo "Run IonQuant"
+# sbatch --output=$outputdirectory/logs/IonQuant_%A.log\
+#          -W\
+#          "$outputdirectory/settings/IonQuant/Sbatch_IonQuant.sh" "$outputdirectory"  
+# echo "IonQuant finished"

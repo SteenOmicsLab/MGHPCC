@@ -33,6 +33,11 @@ cp -r $fragpipeDirectory/* /tmp/fragpipe"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/
 chmod 777 -R /tmp/fragpipe"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/
 chmod u+x /tmp/fragpipe"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/tools/philosopher/philosopher
 
+#set up Philosopher workspace in this temp folder
+cd /tmp/fragpipe"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/
+$philosopherPath workspace --clean --nocheck
+$philosopherPath workspace --init --temp /tmp/fragpipe"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/ --nocheck
+
 #run peptideProphet
 $philosopherPath peptideprophet --decoyprobs --ppm --accmass --nonparam --expectscore --decoy $decoyPrefix --database $fastaFile $(find /tmp/results"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/ -name "*.pepXML")
 

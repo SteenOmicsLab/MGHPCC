@@ -7,7 +7,7 @@
 ####################################################################################################################################
 
 #Specify Number of files per Batch
-numberOfFilesPerBatch=3
+numberOfFilesPerBatch=10
 
 #Specify Container
 container="/project/Path-Steen/Patrick/Containers/ubuntu_fragpipe"
