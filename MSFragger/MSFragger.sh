@@ -19,7 +19,9 @@ $philosopherNetworkPath workspace --clean --nocheck
 $philosopherNetworkPath workspace --init --nocheck
 
 #Next, we run MSFRAGGER. change xmx for the GB on your system
-java -Xmx120G -jar $msfraggerNetworkPath $fraggerParamsNetworkPath $inputdirectory/*.d
+#java -Xmx170G -jar $msfraggerNetworkPath $fraggerParamsNetworkPath $inputdirectory/*.d
+echo $dbsplits
+python3 $msfragDBsplitNetworkPath $dbsplits "java -Xmx360G -jar" $msfraggerNetworkPath $fraggerParamsNetworkPath $inputdirectory/*.d
 
 #Check if number of pepXML files is same as input files. If yes, we copy over and exit 0. Otherwise exit 1
 #Grab number of input directories, of .pepXML and of .pep.xml files

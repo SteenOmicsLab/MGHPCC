@@ -173,71 +173,60 @@ then
         echo "Writing of mzBIN finished."
 fi
 
-#START COMMENT
+#################
+##  MSFRAGGER  ##
+#################
 
-# #################
-# ##  MSFRAGGER  ##
-# #################
-
-# # mzBIN should be written. We can run MSFragger now.
+# mzBIN should be written. We can run MSFragger now.
 echo "Run MSFragger"
-# sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
-#           -W\
-#           "$outputdirectory/settings/MSFragger/Sbatch_MSFragger.sh" "$outputdirectory"  
+sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
+        -W\
+        "$outputdirectory/settings/MSFragger/Sbatch_MSFragger.sh" "$outputdirectory"  
 echo "MSFragger finished"
 
-# ####################
-# ## peptideProphet ##
-# ####################
+####################
+## peptideProphet ##
+####################
 
-# #Run peptideprophet in parallel. Use same batching as for writing mzBIN
+# Run peptideprophet in parallel. Use same batching as for writing mzBIN
 echo "Run batched peptideProphet"
-# sbatch --array=0-$msfraggerArrayNumber\
-#          --output=$outputdirectory/logs/peptideProphet_%A_%a.log\
-#          -W\
-#         "$outputdirectory/settings/Philosopher/Sbatch_peptideProphet.sh" "$outputdirectory"
+sbatch --array=0-$msfraggerArrayNumber\
+        --output=$outputdirectory/logs/peptideProphet_%A_%a.log\
+        -W\
+        "$outputdirectory/settings/Philosopher/Sbatch_peptideProphet.sh" "$outputdirectory"
 echo "peptideProphet finished"
 
-# ####################
-# ## proteinProphet ##
-# ####################
+####################
+## proteinProphet ##
+##   databases    ##
+##    filter      ##
+##    report      ##
+####################
 
-# #All are single threaded processes that require little computational power
-echo "Run ProteinProphet"
-# sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
-#          -W\
-#          "$outputdirectory/settings/Philosopher/Sbatch_proteinProphet.sh" "$outputdirectory"  
-echo "ProteinProphet finished"
+#All are single threaded processes that require little computational power
+echo "Run ProteinProphet, database, filter and report"
+sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
+        -W\
+        "$outputdirectory/settings/Philosopher/Sbatch_proteinProphet_DIA.sh" "$outputdirectory"  
+echo "ProteinProphet, database, filter and report finished"
 
-
-# ######################
-# ## WRITE quantindex ##
-# ######################
-
-#determine number of quantindex
-echo "Checking if all quantindex files are written...."
-numberFilesquantindex=$(find $inputdirectory -maxdepth 1 -name "*.quantindex" | wc -l)
-
-#Determine number of mzBIN files in the directory. If corresponds to number of bruker .d we run msfragger
-#If not; we run the write mzbin scripts first to parallelize the writing process
-if (( $numberFiles != $numberFilesquantindex))
-then
-        echo "Uneven number of .d files and quantindex files observed: will write all quantindex first"
-        sbatch --array=0-$msfraggerArrayNumber\
-         --output=$outputdirectory/logs/write_quantindex_%A_%a.log\
+####################
+##    easypqp1    ##
+#################### 
+echo "Run EasyPQP convert"
+sbatch --array=0-$msfraggerArrayNumber\
+         --output=$outputdirectory/logs/EasyPQPConvert_%A_%a.log\
          -W\
-         "$outputdirectory/settings/IonQuant/Sbatch_write_quantindex.sh" "$outputdirectory"  
-        echo "Writing of quantindex finished."
-fi
-echo "All quantindex are written and/or found."
+         "$outputdirectory/settings/EasyPQP/EasyPQP_Convert.sh" "$outputdirectory"
+echo "EasyPQP convert finished"
 
-# #################
-# ##  IonQuant   ##
-# #################
-# # quantindex should be written. We can run IonQuant now.
+#################
+##  easypqp2   ##
+#################
+# quantindex should be written. We can run IonQuant now.
 
-# echo "Run IonQuant"
-sbatch --output=$outputdirectory/logs/IonQuant_%A.log\
+echo "Run EasyPQP Library"
+sbatch --output=$outputdirectory/logs/EasyPQPLibrary_%A.log\
          -W\
-         "$outputdirectory/settings/IonQuant/Sbatch_IonQuant.sh" "$outputdirectory"  
-echo "IonQuant finished"
+         "$outputdirectory/settings/EasyPQP/EasyPQP_Library.sh" "$outputdirectory"  
+echo "ALL DONE!!"

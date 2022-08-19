@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --partition=mghpcc-compute 	#Queue to be used?
+#SBATCH --partition=mghpcc-largemem #interactive 	#Queue to be used?
 #SBATCH --account=bch-mghpcc		#account name
-#SBATCH --time=2:00:00 		#12 hours. Normal search (i.e. tryptic, Oxidation and acetylation) will take +- 2 hours with 30 input files...
+#SBATCH --time=239:59:59 		#12 hours. Normal search (i.e. tryptic, Oxidation and acetylation) will take +- 2 hours with 30 input files...
 #SBATCH --job-name=MSfragger 		#Job name
 #SBATCH --nodes=1			#Number of Nodes needed
-#SBATCH --cpus-per-task=64		#Number of CPUS needed
-#SBATCH --mem=120GB			#Memory needed	
+#SBATCH --cpus-per-task=48		#Number of CPUS needed
+#SBATCH --mem=360GB			#Memory needed	
 
 export LC_ALL=C
 
