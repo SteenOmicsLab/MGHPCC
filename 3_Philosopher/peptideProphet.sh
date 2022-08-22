@@ -45,11 +45,10 @@ $philosopherPath peptideprophet --decoyprobs --ppm --accmass --nonparam --expect
 pepXMLnumber=$(find /tmp/results"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*/*.pepXML -type f | wc -l)
 pep_xmlnumber=$(find /tmp/results"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/*/*.pep.xml -type f | wc -l)
 
-#if numberOfFilesPerBatch is not equal to number of mzBIN something went wrong and we throw error. Otherwise, the copy the mzBIN files over.
 #If inputNumber and pepXMLNumber are not equal it means all went fine. If not, it should not copy, and echo print that something went wrong.
 if (( $pepXMLnumber == $pep_xmlnumber))
 then
-	#Copy mzBIN and .mgf
+	#Copy results
 	cp -r /tmp/results"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/* $outputdirectory/results/
    #Remove /tmp files
    rm -r /tmp/fragpipe"$SLURM_JOBID""$SLURM_ARRAY_TASK_ID"/

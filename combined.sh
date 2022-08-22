@@ -151,15 +151,16 @@ do
       echo $j 
 done >$outputdirectory/settings/write_MZbin.txt
 
+
+#################
+## WRITE mzBIN ##
+#################
+
 #Set up array number for sbatch (total number of items in array MINUS 1)
 msfraggerArrayNumber=$((${#jobArray[@]} -1))
 
 #determine number of mzBIN
 numberFilesmzBIN=$(find $inputdirectory -maxdepth 1 -name "*.mzBIN" | wc -l)
-
-#################
-## WRITE mzBIN ##
-#################
 
 #Determine number of mzBIN files in the directory. If corresponds to number of bruker .d we run msfragger
 #If not; we run the write mzbin scripts first to parallelize the writing process
@@ -181,9 +182,9 @@ fi
 
 # # mzBIN should be written. We can run MSFragger now.
 echo "Run MSFragger"
-# sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
-#           -W\
-#           "$outputdirectory/settings/MSFragger/Sbatch_MSFragger.sh" "$outputdirectory"  
+sbatch --output=$outputdirectory/logs/MSFragger_%A.log\
+          -W\
+          "$outputdirectory/settings/MSFragger/Sbatch_MSFragger.sh" "$outputdirectory"  
 echo "MSFragger finished"
 
 # ####################
@@ -192,10 +193,10 @@ echo "MSFragger finished"
 
 # #Run peptideprophet in parallel. Use same batching as for writing mzBIN
 echo "Run batched peptideProphet"
-# sbatch --array=0-$msfraggerArrayNumber\
-#          --output=$outputdirectory/logs/peptideProphet_%A_%a.log\
-#          -W\
-#         "$outputdirectory/settings/Philosopher/Sbatch_peptideProphet.sh" "$outputdirectory"
+sbatch --array=0-$msfraggerArrayNumber\
+         --output=$outputdirectory/logs/peptideProphet_%A_%a.log\
+         -W\
+        "$outputdirectory/settings/Philosopher/Sbatch_peptideProphet.sh" "$outputdirectory"
 echo "peptideProphet finished"
 
 # ####################
@@ -204,9 +205,9 @@ echo "peptideProphet finished"
 
 # #All are single threaded processes that require little computational power
 echo "Run ProteinProphet"
-# sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
-#          -W\
-#          "$outputdirectory/settings/Philosopher/Sbatch_proteinProphet.sh" "$outputdirectory"  
+sbatch --output=$outputdirectory/logs/ProteinProphet_et_al_%A.log\
+         -W\
+         "$outputdirectory/settings/Philosopher/Sbatch_proteinProphet.sh" "$outputdirectory"  
 echo "ProteinProphet finished"
 
 
